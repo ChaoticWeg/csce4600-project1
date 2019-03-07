@@ -1,0 +1,13 @@
+# vim swapfiles
+*.swp
+
+# compiled libraries
+lib/
+
+# binaries
+run
+generate
+
+# generated data
+data/
+
