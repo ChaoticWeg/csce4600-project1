@@ -27,14 +27,22 @@ Generates 200 simulated processes and writes them to `data/processes.dat`. Note 
     $ ./generate 200 > data/processes.dat
 ```
 
+### Run Syntax
+
+Assuming processes were generated into `data/processes.dat`: 
+
+```bash
+    $ ./run <part_number> < data/processes.dat
+```
+
 ### Scheduling
 
-Recommended usage (e.g. 200 processes):
+Recommended usage (e.g. run part 1 on 200 processes):
 
 ```bash
     $ make all
     $ make data
-    $ ./run < data/processes.dat
+    $ ./run 1 < data/processes.dat
 ```
 
 ### TODO: update usage as scope expands

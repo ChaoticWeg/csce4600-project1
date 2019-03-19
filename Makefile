@@ -34,5 +34,5 @@ dirs:
 data: dirs generate
 	@./generate $(NUM_PROCESSES) > data/processes.dat
 
-ci: clean dirs all
+ci: clean data run
 

@@ -15,7 +15,12 @@ matrix:
         - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
 
 install: make ci
-script: ./generate 20 | ./run
+
+script:
+  - ./run 1 < data/processes.dat
+  - ./run 2 < data/processes.dat
+  - ./run 3 < data/processes.dat
+  - ./run 4 < data/processes.dat
 
 after_success:
   - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh

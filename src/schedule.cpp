@@ -1,5 +1,8 @@
 #include "schedule.hpp"
 
+#include "cpu.hpp"
+#include "process.hpp"
+
 void schedule_Part1()
 {
     
