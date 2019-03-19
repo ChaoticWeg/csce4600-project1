@@ -1,6 +1,7 @@
 #pragma once
 
 #include <tuple>
+#include <string>
 
 // cpu range
 #define PROC_MIN_CPU 10
@@ -34,6 +35,7 @@ private:
 public:
     static Process generate();
     static Process from_tuple(const ProcessTuple &);
+    static Process from_string(const std::string &);
 
     inline int pid() { return _pid; }
     inline int cpu() { return _cpu; }

@@ -7,6 +7,10 @@
 // utilities
 #include <sstream>
 
+// boost
+#include <boost/algorithm/string.hpp>
+#include <boost/lexical_cast.hpp>
+
 int Process::lastPid = 0;
 bool Process::seeded = false;
 
@@ -51,5 +55,19 @@ std::string Process::to_string()
     std::stringstream ss;
     ss << _pid << "," << _cpu << "," << _mem;
     return ss.str();
+}
+
+Process Process::from_string(const std::string &str)
+{
+    std::vector<std::string> tokens;
+    boost::split(tokens, str, boost::is_any_of(","));
+
+    ProcessTuple tuple = std::make_tuple(
+        std::stoi(tokens[0]),
+        std::stoi(tokens[1]),
+        std::stoi(tokens[2])
+    );
+    
+    return Process::from_tuple(tuple);
 }
 
