@@ -3,7 +3,7 @@
 CC=g++ --std=c++11
 CFLAGS=-Werror -Wall
 
-NUM_PROCESSES=20
+NUM_PROCESSES=200
 
 LIBDIR=lib
 SRCDIR=src
