@@ -3,12 +3,14 @@
 CC=g++ --std=c++11
 CFLAGS=-Werror -Wall
 
+NUM_PROCESSES=20
+
 LIBDIR=lib
 SRCDIR=src
 
-.PHONY: all clean dirs ci
+.PHONY: all clean dirs ci data
 
-all: run generate
+all: dirs run generate
 
 run: $(LIBDIR)/libprocess.so main.cpp
 	$(CC) $(CFLAGS) -I$(SRCDIR) -L$(LIBDIR) -lprocess main.cpp -o $@
@@ -28,6 +30,9 @@ clean:
 dirs:
 	@mkdir -p lib
 	@mkdir -p data
+
+data: dirs generate
+	@./generate $(NUM_PROCESSES) > data/processes.dat
 
 ci: clean dirs all
 
