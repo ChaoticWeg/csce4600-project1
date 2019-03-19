@@ -6,7 +6,7 @@ CFLAGS=-Werror -Wall
 LIBDIR=lib
 SRCDIR=src
 
-.PHONY: all clean
+.PHONY: all clean dirs ci
 
 all: run generate
 
@@ -24,4 +24,10 @@ $(LIBDIR)/libprocess.so: $(SRCDIR)/process.cpp
 clean:
 	@rm -f $(LIBDIR)/*.so
 	@rm -f run generate
+
+dirs:
+	@mkdir -p lib
+	@mkdir -p data
+
+ci: clean dirs all
 
