@@ -15,19 +15,26 @@
     $ make
 ```
 
-### Usage
-
-Generate new list of N-many simulated processes:
+### Generating Data
 
 ```bash
-    $ ./generate <N>
+    $ make data
 ```
+
+Generates 200 simulated processes and writes them to `data/processes.dat`. Note that this is equivalent to:
+
+```bash
+    $ ./generate 200 > data/processes.dat
+```
+
+### Scheduling
 
 Recommended usage (e.g. 200 processes):
 
 ```bash
-    $ ./generate 200 > $datadir/processes.dat
-    $ ./run < $datadir/processes.dat
+    $ make all
+    $ make data
+    $ ./run < data/processes.dat
 ```
 
 ### TODO: update usage as scope expands
