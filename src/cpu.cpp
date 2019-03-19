@@ -28,7 +28,7 @@ void getCPUs_Part1(std::vector<CPU> &out_cpus)
     int num_cpus = 5;
     for (int i = 0; i < num_cpus; ++i)
     {
-        out_cpus.push_back(CPU(0, 0));
+        out_cpus.push_back(CPU(2000000L, 0));
     }
 }
 
