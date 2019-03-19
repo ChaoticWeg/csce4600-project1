@@ -2,6 +2,7 @@
 
 #include <tuple>
 #include <string>
+#include <vector>
 
 // cpu range
 #define PROC_MIN_CPU 10
@@ -36,6 +37,8 @@ public:
     static Process generate();
     static Process from_tuple(const ProcessTuple &);
     static Process from_string(const std::string &);
+
+    static void read_from_stdin(std::vector<Process> &);
 
     inline int pid() const { return _pid; }
     inline int cpu() const { return _cpu; }

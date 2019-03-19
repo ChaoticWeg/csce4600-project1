@@ -71,3 +71,17 @@ Process Process::from_string(const std::string &str)
     return Process::from_tuple(tuple);
 }
 
+void Process::read_from_stdin(std::vector<Process> &out_procs)
+{
+    out_procs.clear();
+
+    for (std::string raw; std::getline(std::cin, raw, ';');)
+    {
+        // newline means done -- empty string is not likely
+        if (raw.compare("\n") == 0) break;
+        if (raw.compare("") == 0) break;
+
+        out_procs.push_back(Process::from_string(raw));
+    }
+}
+

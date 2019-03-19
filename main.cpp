@@ -1,37 +1,22 @@
 #include <iostream>
 #include <vector>
 
+#include "process.hpp"
 #include "cpu.hpp"
-
-void read_processes_from_stdin(std::vector<Process> &);
+#include "schedule.hpp"
 
 int main()
 {
-    std::vector<Process> processes;
-    read_processes_from_stdin(processes);
+    std::vector<Process> procs;
+    Process::read_from_stdin(procs);
 
-    std::vector<CPU> cpus;
-    getCPUs_Part3(cpus);
-
-    for (auto it = cpus.begin(); it != cpus.end(); ++it)
+    for (auto it = procs.begin(); it != procs.end(); ++it)
     {
-        std::cout << "CPU: " << it->hz() << " Hz ; " << it->ram() << " B RAM" << std::endl;
+        std::cout << "PID " << it->pid() << ": "
+            << it->cpu() << " cycles, " << it->mem() << " bytes"
+            << std::endl;
     }
 
     return 0;
-}
-
-void read_processes_from_stdin(std::vector<Process> &out_procs)
-{
-    out_procs.clear();
-
-    for (std::string raw; std::getline(std::cin, raw, ';');)
-    {
-        // newline means done -- empty string is not likely
-        if (raw.compare("\n") == 0) break;
-        if (raw.compare("") == 0) break;
-
-        out_procs.push_back(Process::from_string(raw));
-    }
 }
 
