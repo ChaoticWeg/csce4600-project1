@@ -5,6 +5,7 @@
 void CPU::queue(const Process &proc)
 {
     _processes.push_back(proc);
+    _numCycles += proc.cpu();
 }
 
 /* Execute all queued processes and return the number of seconds taken in total */

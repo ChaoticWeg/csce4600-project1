@@ -1,5 +1,6 @@
 #pragma once
 
+#include <climits>
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -7,7 +8,26 @@
 #include "process.hpp"
 #include "cpu.hpp"
 
-bool compareProcesses(const Process &l, const Process &r) { return l.cpu() < r.cpu(); }
+bool part1_compareProcesses(const Process &l, const Process &r) { return l.cpu() > r.cpu(); }
+
+int part1_findLightestLoad(const std::vector<CPU> &cpus)
+{
+    unsigned int result = cpus.size();
+    unsigned long long least = ULLONG_MAX;
+
+    unsigned long long this_cpu;
+    for (unsigned int i = 0; i < cpus.size(); ++i)
+    {
+        this_cpu = cpus[i].peek_cycles();
+        if (this_cpu < least)
+        {
+            result = i;
+            least = this_cpu;
+        }
+    }
+
+    return result;
+}
 
 void schedule_Part1()
 {
@@ -28,7 +48,7 @@ void schedule_Part1()
     unsigned int cyclesPerCPU;
 
     // sort processes by CPU load ascending
-    std::sort(processes.begin(), processes.end(), compareProcesses);
+    std::sort(processes.begin(), processes.end(), part1_compareProcesses);
 
     // count up number of cycles needed in total
     for (auto it = processes.begin(); it != processes.end(); ++it)
@@ -44,32 +64,37 @@ void schedule_Part1()
 
     // start with CPU 0
     unsigned int numCyclesThisCPU = 0, cpuIndex = 0;
-    std::cout << "scheduling for CPU " << cpuIndex << "..." << std::flush;
 
     // attempt to schedule even load on each CPU
-    for (auto it = processes.begin(); it != processes.end(); ++it)
+    auto process_it = processes.begin();
+
+    // until we run out of CPUs...
+    while (cpuIndex < cpus.size())
     {
-        numCyclesThisCPU += it->cpu();
-
-        if (numCyclesThisCPU > cyclesPerCPU && cpuIndex + 1 < cpus.size())
+        // until we're at desired load for this cpu (or run out of processes)...
+        while (numCyclesThisCPU < cyclesPerCPU && process_it != processes.end())
         {
-            // move the the next CPU
-            cpuIndex++;
-
-            // we've hit the max desired cycles for this CPU
-            std::cout << " done: " << numCyclesThisCPU << " cycles\n"
-                << "scheduling for CPU " << cpuIndex << "..." << std::flush;
-
-            // numCyclesThisCPU should be reset to initial value
-            numCyclesThisCPU = it->cpu();
+            numCyclesThisCPU += process_it->cpu();
+            cpus[cpuIndex].queue(*process_it);
+            ++process_it;
         }
 
-        cpus[cpuIndex].queue(*it);
+        // we're at desired load now, but there are still more processes
+        // move the the next CPU
+        ++cpuIndex;
+        numCyclesThisCPU = 0;
+    }
+
+    // we're out of CPUs now. until we run out of processes, give each one to the
+    // CPU with the lightest load.
+    while (process_it != processes.end())
+    {
+        cpuIndex = part1_findLightestLoad(cpus);
+        cpus[cpuIndex].queue(*process_it);
+        ++process_it;
     }
 
     // done scheduling
-    std::cout << " done: " << numCyclesThisCPU << " cycles" << std::endl;
-
     // execute now
     std::cout << "spinning up all cpus..." << std::flush;
     float secondsTaken = 0.0f;

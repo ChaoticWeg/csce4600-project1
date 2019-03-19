@@ -10,6 +10,7 @@ private:
     std::vector<Process> _processes;
     unsigned long long _hz;
     unsigned long long _ram;
+    unsigned long long _numCycles;
 
 public:
     // constructor: initialize private instance fields
@@ -17,6 +18,7 @@ public:
 
     // run queue and execution
     void queue(const Process &);
+    inline unsigned long long peek_cycles() const { return _numCycles; }
     float execute_all() const;
 
     // accessors
