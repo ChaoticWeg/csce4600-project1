@@ -6,9 +6,13 @@ matrix:
     - os: linux
       addons:
         apt:
+          sources:
+            - ubuntu-toolchain-r-test
           packages:
             - g++-4.9
             - libboost-all-dev
+      env:
+        - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
 
 install: make ci
 script: ./generate 20 | ./run
