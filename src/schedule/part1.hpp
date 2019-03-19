@@ -51,10 +51,8 @@ void schedule_Part1()
     std::sort(processes.begin(), processes.end(), part1_compareProcesses);
 
     // count up number of cycles needed in total
-    for (auto it = processes.begin(); it != processes.end(); ++it)
-    {
-        totalNumCyclesNeeded += it->cpu();
-    }
+    std::for_each(processes.begin(), processes.end(),
+        [&](Process p){ totalNumCyclesNeeded += p.cpu(); });
 
     // average load per CPU
     std::cout << totalNumCyclesNeeded << " cycles total, ";
@@ -96,15 +94,30 @@ void schedule_Part1()
 
     // done scheduling
     // execute now
-    std::cout << "spinning up all cpus..." << std::flush;
-    float secondsTaken = 0.0f;
-    for (auto it = cpus.begin(); it != cpus.end(); ++it)
-    {
-        float secondsThisCPU = it->execute_all();
-        if (secondsThisCPU > secondsTaken)
-            secondsTaken = secondsThisCPU;
-    }
+    std::cout << "\nspinning up all cpus..." << std::flush;
 
-    std::cout << " done\n\ntotal execution time: " << secondsTaken / 1000.0f << " seconds" << std::endl;
+    // (we don't care about this part)
+    std::cout << " complete" << std::endl;
+
+    // get a vector containing runtime for each cpu
+    // (this makes calculations easier and less taxing later)
+    std::vector<float> runtimes; runtimes.reserve(cpus.size());
+    std::transform(cpus.begin(), cpus.end(), std::back_inserter(runtimes),
+        [](CPU c){ return c.execute_all(); });
+
+    // sort the runtimes from low to high
+    std::sort(runtimes.begin(), runtimes.end(),
+        [](const float &l, const float &r){ return l < r; });
+
+
+    // get execution time (time for longest-running cpu to finish
+    float runtime = runtimes.back(); runtimes.pop_back();
+    std::cout << "execution time: " << runtime << "ms" << std::endl;
+    
+    // calculate waiting time
+    // (that is, the amount of time each other cpu spent waiting)
+    float waitingTime = 0.0f;
+    std::for_each(runtimes.begin(), runtimes.end(), [&](float f) { waitingTime += runtime - f; }); 
+    std::cout << "waiting time: " << waitingTime << "ms" << std::endl;
 }
 
