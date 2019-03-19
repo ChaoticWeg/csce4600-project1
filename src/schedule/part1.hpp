@@ -40,7 +40,7 @@ void schedule_Part1()
     getCPUs_Part1(cpus);
 
     // header
-    std::cout << cpus.size() << " CPUs, each @ " << cpus[0].hz() / 1000000
+    std::cout << cpus.size() << " CPUs, each @ " << cpus[0].hz() / 1000000000
         << " GHz\n" << std::endl;
 
     // running totals and averages etc
