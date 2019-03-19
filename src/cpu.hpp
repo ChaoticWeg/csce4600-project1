@@ -17,7 +17,7 @@ public:
 
     // run queue and execution
     void queue(const Process &);
-    unsigned long long execute_all() const;
+    float execute_all() const;
 
     // accessors
     inline unsigned long long hz() { return _hz; }

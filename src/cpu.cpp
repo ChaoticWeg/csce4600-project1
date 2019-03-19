@@ -7,14 +7,14 @@ void CPU::queue(const Process &proc)
     _processes.push_back(proc);
 }
 
-/* Execute all queued processes and return the number of cycles taken in total */
-unsigned long long CPU::execute_all() const
+/* Execute all queued processes and return the number of seconds taken in total */
+float CPU::execute_all() const
 {
-    unsigned long long result = 0;
+    float result = 0;
 
     for (auto it = _processes.begin(); it != _processes.end(); ++it)
     {
-        result += it->cpu();
+        result += it->cpu() * 1.0f / (_hz * 1.0f);
     }
 
     return result;
