@@ -38,6 +38,7 @@ void getCPUs_Part2(std::vector<CPU> &out_cpus)
     out_cpus.clear();
     
     out_cpus.push_back(CPU(0, 2000000000L));
+    out_cpus.push_back(CPU(0, 2000000000L));
     out_cpus.push_back(CPU(0, 4000000000L));
     out_cpus.push_back(CPU(0, 4000000000L));
     out_cpus.push_back(CPU(0, 8000000000L));
@@ -48,6 +49,7 @@ void getCPUs_Part3(std::vector<CPU> &out_cpus)
 {
     out_cpus.clear();
     
+    out_cpus.push_back(CPU(2000000000L, 8000000000L));
     out_cpus.push_back(CPU(2000000000L, 8000000000L));
     out_cpus.push_back(CPU(3000000000L, 8000000000L));
     out_cpus.push_back(CPU(3000000000L, 8000000000L));
