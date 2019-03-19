@@ -17,10 +17,15 @@ public:
 
     // run queue and execution
     void queue(const Process &);
-    unsigned long long execute_all();
+    unsigned long long execute_all() const;
 
     // accessors
     inline unsigned long long hz() { return _hz; }
     inline unsigned long long ram() { return _ram; }
 };
+
+void getCPUs_Part1(std::vector<CPU> &);
+void getCPUs_Part2(std::vector<CPU> &);
+void getCPUs_Part3(std::vector<CPU> &);
+void getCPUs_Part4(std::vector<CPU> &);
 

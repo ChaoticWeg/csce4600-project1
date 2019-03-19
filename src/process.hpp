@@ -37,9 +37,9 @@ public:
     static Process from_tuple(const ProcessTuple &);
     static Process from_string(const std::string &);
 
-    inline int pid() { return _pid; }
-    inline int cpu() { return _cpu; }
-    inline int mem() { return _mem; }
+    inline int pid() const { return _pid; }
+    inline int cpu() const { return _cpu; }
+    inline int mem() const { return _mem; }
 
     ProcessTuple as_tuple();
     std::string to_string();
