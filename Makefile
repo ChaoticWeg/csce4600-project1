@@ -12,7 +12,7 @@ SRCDIR=src
 
 all: dirs run generate
 
-run: $(LIBDIR)/libprocess.so main.cpp
+run: $(LIBDIR)/libprocess.so main.cpp $(SRCDIR)/cpu.cpp $(SRCDIR)/schedule/*.hpp
 	$(CC) $(CFLAGS) -I$(SRCDIR) -L$(LIBDIR) -lprocess $(SRCDIR)/cpu.cpp main.cpp -o $@
 
 generate: $(LIBDIR)/libprocess.so generate.cpp
