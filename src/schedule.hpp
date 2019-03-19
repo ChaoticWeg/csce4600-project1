@@ -1,7 +1,7 @@
 #pragma once
 
-void schedule_Part1();
-void schedule_Part2();
-void schedule_Part3();
-void schedule_Part4();
+#include "schedule/part1.hpp"
+#include "schedule/part2.hpp"
+#include "schedule/part3.hpp"
+#include "schedule/part4.hpp"
 
