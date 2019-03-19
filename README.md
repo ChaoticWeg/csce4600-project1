@@ -1,5 +1,7 @@
 # OS Project 1
 
+![Travis-CI](https://img.shields.io/travis/com/ChaoticWeg/csce4600-project1.svg?style=flat-square)
+
 ### Links
 
 - [Project PDF]
