@@ -8,8 +8,6 @@
 #include "process.hpp"
 #include "cpu.hpp"
 
-bool part1_compareProcesses(const Process &l, const Process &r) { return l.cpu() > r.cpu(); }
-
 void schedule_Part1()
 {
     // read processes from stdin
@@ -28,8 +26,8 @@ void schedule_Part1()
     unsigned int totalNumCyclesNeeded = 0;
     unsigned int cyclesPerCPU;
 
-    // sort processes by CPU load ascending
-    std::sort(processes.begin(), processes.end(), part1_compareProcesses);
+    // sort processes by CPU load (descending)
+    std::sort(processes.begin(), processes.end(), SchedulingUtils::sortProcessesDescending);
 
     // count up number of cycles needed in total
     std::for_each(processes.begin(), processes.end(),

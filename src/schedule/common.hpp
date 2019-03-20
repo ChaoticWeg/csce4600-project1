@@ -25,5 +25,15 @@ namespace SchedulingUtils
 
         return result;
     }
+
+    bool sortProcessesAscending(const Process &l, const Process &r)
+    {
+        return l.cpu() < r.cpu();
+    }
+
+    bool sortProcessesDescending(const Process &l, const Process &r)
+    {
+        return l.cpu() > r.cpu();
+    }
 }
 
