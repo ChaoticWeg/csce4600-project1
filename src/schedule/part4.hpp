@@ -16,7 +16,7 @@ void part4_scheduleOne(const Process &p, std::vector<CPU> &cpus)
 void part4_scheduleAll(std::vector<Process> &procs, std::vector<CPU> &cpus)
 {
     SchedulingUtils::sortAscending(procs);
-    std::for_each(procs.begin(), procs.end(), [&](Process p) { part3_scheduleOne(p, cpus); });
+    std::for_each(procs.begin(), procs.end(), [&](Process p) { part4_scheduleOne(p, cpus); });
 }
 
 void schedule_Part4()
