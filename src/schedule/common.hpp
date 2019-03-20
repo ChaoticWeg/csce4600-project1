@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <limits>
 #include <climits>
 #include <algorithm>
 
@@ -22,6 +23,23 @@ namespace SchedulingUtils
             {
                 result = i;
                 least = this_cpu;
+            }
+        }
+
+        return result;
+    }
+
+    unsigned int findShortestWait(const Process &p, const std::vector<CPU> &cpus)
+    {
+        float shortest = std::numeric_limits<float>::max();
+        unsigned int result = cpus.size();
+
+        for (unsigned int i = 0; i < cpus.size(); i++)
+        {
+            if (cpus[i].remaining_time() < shortest)
+            {
+                shortest = cpus[i].remaining_time();
+                result = i;
             }
         }
 
