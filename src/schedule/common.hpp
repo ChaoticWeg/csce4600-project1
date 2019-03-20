@@ -2,8 +2,10 @@
 
 #include <vector>
 #include <climits>
+#include <algorithm>
 
 #include "cpu.hpp"
+#include "process.hpp"
 
 namespace SchedulingUtils
 {
@@ -26,14 +28,25 @@ namespace SchedulingUtils
         return result;
     }
 
-    bool sortProcessesAscending(const Process &l, const Process &r)
+    bool boolAscending(const Process &l, const Process &r) { return l.cpu() < r.cpu(); }
+    bool boolDescending(const Process &l, const Process &r) { return l.cpu() > r.cpu(); }
+
+    void sortAscending(std::vector<Process> &procs)
     {
-        return l.cpu() < r.cpu();
+        std::sort(procs.begin(), procs.end(), boolAscending);
     }
 
-    bool sortProcessesDescending(const Process &l, const Process &r)
+    void sortDescending(std::vector<Process> &procs)
     {
-        return l.cpu() > r.cpu();
+        std::sort(procs.begin(), procs.end(), boolDescending);
+    }
+
+    unsigned int sumCyclesNeeded(std::vector<Process> procs)
+    {
+        unsigned int result = 0;
+        std::for_each(procs.begin(), procs.end(),
+            [&](Process p){ result += p.cpu(); });
+        return result;
     }
 }
 

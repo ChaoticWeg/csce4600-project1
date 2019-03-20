@@ -8,6 +8,44 @@
 #include "process.hpp"
 #include "cpu.hpp"
 
+void part1_scheduleOne(const Process &p, std::vector<CPU> &cpus,
+    unsigned int &i_cpu, const unsigned int &desiredLoad)
+{
+    // if this CPU can take another process, queue it up
+    if (cpus[i_cpu].peek_cycles() < desiredLoad)
+    {
+        cpus[i_cpu].queue(p);
+        return;
+    }
+
+    // if this CPU can't take another process, move on to the next one
+    ++i_cpu;
+
+    // if there are no more CPUs, pick the one with the lightest load
+    if (i_cpu >= cpus.size())
+    {
+        i_cpu = SchedulingUtils::findLightestLoad(cpus);
+    }
+
+    // we now have our CPU. queue it up
+    cpus[i_cpu].queue(p);
+}
+
+void part1_scheduleAll(std::vector<Process> &procs, std::vector<CPU> &cpus)
+{
+    SchedulingUtils::sortDescending(procs);
+
+    unsigned int totalLoad = 0;
+    std::for_each(procs.begin(), procs.end(), [&](Process p) { totalLoad += p.cpu(); });
+
+    unsigned int desiredLoadPerCPU = totalLoad / cpus.size();
+    
+    unsigned int i_cpu = 0;
+    std::for_each(procs.begin(), procs.end(), [&](Process p) {
+        part1_scheduleOne(p, cpus, i_cpu, desiredLoadPerCPU);
+    });
+}
+
 void schedule_Part1()
 {
     // read processes from stdin
@@ -22,57 +60,21 @@ void schedule_Part1()
     std::cout << cpus.size() << " CPUs, each @ " << cpus[0].hz() / 1000000000
         << " GHz\n" << std::endl;
 
-    // running totals and averages etc
-    unsigned int totalNumCyclesNeeded = 0;
-    unsigned int cyclesPerCPU;
-
     // sort processes by CPU load (descending)
-    std::sort(processes.begin(), processes.end(), SchedulingUtils::sortProcessesDescending);
+    SchedulingUtils::sortDescending(processes);
 
-    // count up number of cycles needed in total
-    std::for_each(processes.begin(), processes.end(),
-        [&](Process p){ totalNumCyclesNeeded += p.cpu(); });
+    // calculate cycles needed and cycles desired per cpu
+    unsigned int totalNumCyclesNeeded = SchedulingUtils::sumCyclesNeeded(processes);
+    unsigned int cyclesPerCPU = totalNumCyclesNeeded / cpus.size();
 
-    // average load per CPU
-    std::cout << totalNumCyclesNeeded << " cycles total, ";
-    cyclesPerCPU = totalNumCyclesNeeded / cpus.size();
-    std::cout << "distributing " << cyclesPerCPU << " cycles per CPU ("
+    std::cout << totalNumCyclesNeeded << " cycles total, "
+        << "distributing " << cyclesPerCPU << " cycles per CPU ("
         << cpus.size() << ")" << std::endl;
 
-    // start with CPU 0
-    unsigned int numCyclesThisCPU = 0, cpuIndex = 0;
+    // schedule
+    part1_scheduleAll(processes, cpus);
 
-    // attempt to schedule even load on each CPU
-    auto process_it = processes.begin();
-
-    // until we run out of CPUs...
-    while (cpuIndex < cpus.size())
-    {
-        // until we're at desired load for this cpu (or run out of processes)...
-        while (numCyclesThisCPU < cyclesPerCPU && process_it != processes.end())
-        {
-            numCyclesThisCPU += process_it->cpu();
-            cpus[cpuIndex].queue(*process_it);
-            ++process_it;
-        }
-
-        // we're at desired load now, but there are still more processes
-        // move the the next CPU
-        ++cpuIndex;
-        numCyclesThisCPU = 0;
-    }
-
-    // we're out of CPUs now. until we run out of processes, give each one to the
-    // CPU with the lightest load.
-    while (process_it != processes.end())
-    {
-        cpuIndex = SchedulingUtils::findLightestLoad(cpus);
-        cpus[cpuIndex].queue(*process_it);
-        ++process_it;
-    }
-
-    // done scheduling
-    // execute now
+    // "execute"
     std::cout << "\nspinning up all cpus..." << std::flush;
 
     // (we don't care about this part)
@@ -87,7 +89,6 @@ void schedule_Part1()
     // sort the runtimes from low to high
     std::sort(runtimes.begin(), runtimes.end(),
         [](const float &l, const float &r){ return l < r; });
-
 
     // get execution time (time for longest-running cpu to finish
     float runtime = runtimes.back(); runtimes.pop_back();
