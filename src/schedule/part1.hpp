@@ -1,33 +1,14 @@
 #pragma once
 
-#include <climits>
 #include <iostream>
 #include <vector>
 #include <algorithm>
 
+#include "schedule/common.hpp"
 #include "process.hpp"
 #include "cpu.hpp"
 
 bool part1_compareProcesses(const Process &l, const Process &r) { return l.cpu() > r.cpu(); }
-
-int part1_findLightestLoad(const std::vector<CPU> &cpus)
-{
-    unsigned int result = cpus.size();
-    unsigned long long least = ULLONG_MAX;
-
-    unsigned long long this_cpu;
-    for (unsigned int i = 0; i < cpus.size(); ++i)
-    {
-        this_cpu = cpus[i].peek_cycles();
-        if (this_cpu < least)
-        {
-            result = i;
-            least = this_cpu;
-        }
-    }
-
-    return result;
-}
 
 void schedule_Part1()
 {
@@ -87,7 +68,7 @@ void schedule_Part1()
     // CPU with the lightest load.
     while (process_it != processes.end())
     {
-        cpuIndex = part1_findLightestLoad(cpus);
+        cpuIndex = SchedulingUtils::findLightestLoad(cpus);
         cpus[cpuIndex].queue(*process_it);
         ++process_it;
     }
