@@ -9,9 +9,9 @@
 
 namespace SchedulingUtils
 {
-    unsigned int findLightestLoad(const std::vector<CPU> &cpus)
+    unsigned long findLightestLoad(const std::vector<CPU> &cpus)
     {
-        unsigned int result = cpus.size();
+        unsigned long result = cpus.size();
         unsigned long long least = ULLONG_MAX;
 
         unsigned long long this_cpu;

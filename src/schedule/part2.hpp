@@ -18,7 +18,7 @@ void part2_scheduleOne(const Process &p, std::vector<CPU> &cpus)
     }
 
     // find the CPU with the lightest load
-    unsigned int targetCpuIndex = cpus.size();
+    unsigned long targetCpuIndex = cpus.size();
     unsigned long long currentLightestLoad = ULLONG_MAX;
     std::for_each(compatibleCpuIndexes.begin(), compatibleCpuIndexes.end(),
             [&](unsigned int i) {

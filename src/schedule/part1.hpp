@@ -9,7 +9,7 @@
 #include "cpu.hpp"
 
 void part1_scheduleOne(const Process &p, std::vector<CPU> &cpus,
-    unsigned int &i_cpu, const unsigned int &desiredLoad)
+    unsigned long &i_cpu, const unsigned long &desiredLoad)
 {
     // if this CPU can take another process, queue it up
     if (cpus[i_cpu].peek_cycles() < desiredLoad)
@@ -38,9 +38,9 @@ void part1_scheduleAll(std::vector<Process> &procs, std::vector<CPU> &cpus)
     unsigned int totalLoad = 0;
     std::for_each(procs.begin(), procs.end(), [&](Process p) { totalLoad += p.cpu(); });
 
-    unsigned int desiredLoadPerCPU = totalLoad / cpus.size();
+    unsigned long desiredLoadPerCPU = totalLoad / cpus.size();
     
-    unsigned int i_cpu = 0;
+    unsigned long i_cpu = 0;
     std::for_each(procs.begin(), procs.end(), [&](Process p) {
         part1_scheduleOne(p, cpus, i_cpu, desiredLoadPerCPU);
     });
