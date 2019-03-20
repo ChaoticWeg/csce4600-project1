@@ -31,6 +31,8 @@ namespace SchedulingUtils
     bool boolAscending(const Process &l, const Process &r) { return l.cpu() < r.cpu(); }
     bool boolDescending(const Process &l, const Process &r) { return l.cpu() > r.cpu(); }
 
+    bool floatsAscending(const float &l, const float &r) { return l < r; }
+
     void sortAscending(std::vector<Process> &procs)
     {
         std::sort(procs.begin(), procs.end(), boolAscending);
@@ -47,6 +49,23 @@ namespace SchedulingUtils
         std::for_each(procs.begin(), procs.end(),
             [&](Process p){ result += p.cpu(); });
         return result;
+    }
+
+    void analyzeQueues(const std::vector<CPU> &cpus, float &rt, float &wt)
+    {
+        // extract just runtime from each CPU
+        std::vector<float> runtimes; runtimes.reserve(cpus.size());
+        std::transform(cpus.begin(), cpus.end(), std::back_inserter(runtimes),
+            [](CPU c){ return c.execute_all(); });
+
+        // sort ascending and pop the biggest one off - that's your runtime
+        std::sort(runtimes.begin(), runtimes.end(), floatsAscending);
+        rt = runtimes.back(); runtimes.pop_back();
+
+        // sum the rest up - that's your waiting time
+        wt = 0.0f;
+        std::for_each(runtimes.begin(), runtimes.end(),
+            [&](float f) { wt += rt - f; });
     }
 }
 

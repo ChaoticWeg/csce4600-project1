@@ -80,24 +80,11 @@ void schedule_Part1()
     // (we don't care about this part)
     std::cout << " complete" << std::endl;
 
-    // get a vector containing runtime for each cpu
-    // (this makes calculations easier and less taxing later)
-    std::vector<float> runtimes; runtimes.reserve(cpus.size());
-    std::transform(cpus.begin(), cpus.end(), std::back_inserter(runtimes),
-        [](CPU c){ return c.execute_all(); });
+    // analyze queues
+    float run_time, wait_time;
+    SchedulingUtils::analyzeQueues(cpus, run_time, wait_time);
 
-    // sort the runtimes from low to high
-    std::sort(runtimes.begin(), runtimes.end(),
-        [](const float &l, const float &r){ return l < r; });
-
-    // get execution time (time for longest-running cpu to finish
-    float runtime = runtimes.back(); runtimes.pop_back();
-    std::cout << "execution time: " << runtime << "ms" << std::endl;
-    
-    // calculate waiting time
-    // (that is, the amount of time each other cpu spent waiting)
-    float waitingTime = 0.0f;
-    std::for_each(runtimes.begin(), runtimes.end(), [&](float f) { waitingTime += runtime - f; }); 
-    std::cout << "waiting time: " << waitingTime << "ms" << std::endl;
+    // print analysis
+    std::cout << "\nruntime: " << run_time << "ms\nwait time: " << wait_time << "ms" << std::endl;
 }
 
