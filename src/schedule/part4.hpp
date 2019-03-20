@@ -25,7 +25,7 @@ void schedule_Part4()
     Process::read_from_stdin(processes);
 
     std::vector<CPU> cpus;
-    getCPUs_Part3(cpus);
+    getCPUs_Part4(cpus);
 
     unsigned int i_cpu = 0;
     std::for_each(cpus.begin(), cpus.end(), [&](CPU c) {
@@ -35,7 +35,7 @@ void schedule_Part4()
             << std::endl;
     });
 
-    part3_scheduleAll(processes, cpus);
+    part4_scheduleAll(processes, cpus);
 
     float rt, wt;
     SchedulingUtils::analyzeQueues(cpus, rt, wt);
