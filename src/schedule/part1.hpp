@@ -65,7 +65,7 @@ void schedule_Part1()
 
     // calculate cycles needed and cycles desired per cpu
     unsigned int totalNumCyclesNeeded = SchedulingUtils::sumCyclesNeeded(processes);
-    unsigned int cyclesPerCPU = totalNumCyclesNeeded / cpus.size();
+    unsigned long cyclesPerCPU = totalNumCyclesNeeded / cpus.size();
 
     std::cout << totalNumCyclesNeeded << " cycles total, "
         << "distributing " << cyclesPerCPU << " cycles per CPU ("
