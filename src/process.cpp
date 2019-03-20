@@ -6,6 +6,7 @@
 
 // utilities
 #include <sstream>
+#include <iostream>
 
 // boost
 #include <boost/algorithm/string.hpp>

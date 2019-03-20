@@ -61,7 +61,7 @@ void schedule_Part2()
     float run_time, wait_time;
     SchedulingUtils::analyzeQueues(cpus, run_time, wait_time);
 
-    std::cout << "run time: " << run_time << " ms"
+    std::cout << "\nrun time: " << run_time << " ms"
         "\nwait time: " << wait_time << " ms" << std::endl;
 }
 

@@ -85,6 +85,6 @@ void schedule_Part1()
     SchedulingUtils::analyzeQueues(cpus, run_time, wait_time);
 
     // print analysis
-    std::cout << "\nruntime: " << run_time << "ms\nwait time: " << wait_time << "ms" << std::endl;
+    std::cout << "\navg runtime: " << run_time << " ms\navg wait time: " << wait_time << " ms" << std::endl;
 }
 

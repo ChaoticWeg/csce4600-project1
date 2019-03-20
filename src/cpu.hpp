@@ -11,6 +11,7 @@ private:
     unsigned long long _hz;
     unsigned long long _ram;
     unsigned long long _numCycles;
+    unsigned int _nextPid = 0;
 
 public:
     // constructor: initialize private instance fields
@@ -20,7 +21,9 @@ public:
     void queue(const Process &);
     inline unsigned long long peek_cycles() const { return _numCycles; }
     float execute_all() const;
+    float execute_one();
     float remaining_time() const;
+    unsigned long queue_size() const;
 
     // accessors
     inline unsigned long long hz() { return _hz; }

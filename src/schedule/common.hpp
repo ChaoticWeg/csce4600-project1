@@ -51,21 +51,26 @@ namespace SchedulingUtils
         return result;
     }
 
-    void analyzeQueues(const std::vector<CPU> &cpus, float &rt, float &wt)
+    void analyzeQueues(std::vector<CPU> &cpus, float &rt, float &wt)
     {
-        // extract just runtime from each CPU
-        std::vector<float> runtimes; runtimes.reserve(cpus.size());
-        std::transform(cpus.begin(), cpus.end(), std::back_inserter(runtimes),
-            [](CPU c){ return c.execute_all(); });
+        unsigned int totalProcs = 0; // total number of processes
+        float totalRt = 0;           // total running time in seconds
+        float totalWt = 0;           // total wait time in seconds
 
-        // sort ascending and pop the biggest one off - that's your runtime
-        std::sort(runtimes.begin(), runtimes.end(), floatsAscending);
-        rt = runtimes.back(); runtimes.pop_back();
+        // calculate total running time and wait time
+        for (CPU &cpu : cpus) {
+            float cpuRt = 0; // running time for this cpu
+            while (cpu.queue_size() > 0) {
+                totalProcs++;
+                totalWt += cpuRt;
+                cpuRt += cpu.execute_one(); // sum running time for cpu
+            }
+            totalRt += cpuRt;
+        }
 
-        // sum the rest up - that's your waiting time
-        wt = 0.0f;
-        std::for_each(runtimes.begin(), runtimes.end(),
-            [&](float f) { wt += rt - f; });
+        // calculate average running time and wait times
+        rt = (totalRt / totalProcs) * 1000;
+        wt = (totalWt / totalProcs) * 1000;
     }
 }
 

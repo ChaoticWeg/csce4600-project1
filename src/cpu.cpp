@@ -16,6 +16,18 @@ float CPU::execute_all() const
     return remaining_time();
 }
 
+/**
+ * Executes the process at the front of the queue, then increments the next PID.
+ *
+ * @return The amount of time in seconds the process took to run.
+ */
+float CPU::execute_one()
+{
+    Process p = this->_processes[this->_nextPid];
+    this->_nextPid++;
+    return p.cpu() / (this->_hz * 1.0f);
+}
+
 /* Get the amount of time remaining until the next job can be started */
 float CPU::remaining_time() const
 {
@@ -25,6 +37,13 @@ float CPU::remaining_time() const
         result += timeThisJob;
     });
     return result;
+}
+
+/**
+ * @return Number of processes remaining in the queue
+ */
+unsigned long CPU::queue_size() const {
+    return this->_processes.size() - _nextPid;
 }
 
 /* Get CPUs for part 1 */
