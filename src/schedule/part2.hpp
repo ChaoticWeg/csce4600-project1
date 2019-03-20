@@ -35,7 +35,7 @@ void part2_scheduleOne(const Process &p, std::vector<CPU> &cpus)
 
 void part2_scheduleAll(std::vector<Process> &procs, std::vector<CPU> &cpus)
 {
-    SchedulingUtils::sortDescending(procs);
+    SchedulingUtils::sortAscending(procs);
     std::for_each(procs.begin(), procs.end(), [&](Process p) {
         part2_scheduleOne(p, cpus);
     });

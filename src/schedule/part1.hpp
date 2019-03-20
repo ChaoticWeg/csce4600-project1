@@ -33,7 +33,7 @@ void part1_scheduleOne(const Process &p, std::vector<CPU> &cpus,
 
 void part1_scheduleAll(std::vector<Process> &procs, std::vector<CPU> &cpus)
 {
-    SchedulingUtils::sortDescending(procs);
+    SchedulingUtils::sortAscending(procs);
 
     unsigned int totalLoad = 0;
     std::for_each(procs.begin(), procs.end(), [&](Process p) { totalLoad += p.cpu(); });

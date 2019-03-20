@@ -1,10 +1,15 @@
 #include <iostream>
 #include <boost/lexical_cast.hpp>
+#include <fstream>
 
 #include "schedule.hpp"
 
 int main(int argc, char **argv)
 {
+    // FIXME: DON'T COMMIT THIS
+    std::ifstream in("processes.dat");
+    std::cin.rdbuf(in.rdbuf());
+
     if (argc < 2)
     {
         std::cerr << "Usage: " << argv[0] << " <part>" << std::endl;
