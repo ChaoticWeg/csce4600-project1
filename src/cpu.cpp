@@ -1,4 +1,6 @@
 #include <vector>
+#include <algorithm>
+
 #include "cpu.hpp"
 
 /* Add a process to this CPU's run queue */
@@ -11,13 +13,17 @@ void CPU::queue(const Process &proc)
 /* Execute all queued processes and return the number of seconds taken in total */
 float CPU::execute_all() const
 {
+    return remaining_time();
+}
+
+/* Get the amount of time remaining until the next job can be started */
+float CPU::remaining_time() const
+{
     float result = 0;
-
-    for (auto it = _processes.begin(); it != _processes.end(); ++it)
-    {
-        result += it->cpu() * 1.0f / (_hz * 1.0f);
-    }
-
+    std::for_each(_processes.begin(), _processes.end(), [&](Process p) {
+        float timeThisJob = p.cpu() / (_hz * 1.0f);
+        result += timeThisJob;
+    });
     return result;
 }
 
@@ -32,6 +38,7 @@ void getCPUs_Part1(std::vector<CPU> &out_cpus)
         out_cpus.push_back(CPU(2000000000L, 0));
     }
 }
+
 
 /* Get CPUs for part 2 */
 void getCPUs_Part2(std::vector<CPU> &out_cpus)

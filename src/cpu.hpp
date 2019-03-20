@@ -20,6 +20,7 @@ public:
     void queue(const Process &);
     inline unsigned long long peek_cycles() const { return _numCycles; }
     float execute_all() const;
+    float remaining_time() const;
 
     // accessors
     inline unsigned long long hz() { return _hz; }
